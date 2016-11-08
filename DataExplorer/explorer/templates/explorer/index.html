@@ -1,0 +1,20 @@
+<!doctype html>
+<body>
+  <div id="site">
+
+    {% if connected %}
+      <a href="{% url 'explorer:qb_disconnect' %}">Disconnect from Quickbooks</a>
+      <br>
+      {% if company_id %}
+        <h3>Company {{company_id}}</h3>
+        <a href="{% url 'explorer:all_accounts' %}">Browse Accounts</a>
+      {% endif %}
+    {% else %}
+      <a href="{% url 'explorer:qb_connect' %}">Connect to Quickbooks</a>
+    {% endif %}
+
+    {% block data %}
+    {% endblock %}
+
+  </div>
+</body>

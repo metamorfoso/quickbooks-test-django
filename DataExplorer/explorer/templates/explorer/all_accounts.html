@@ -1,0 +1,12 @@
+{% extends 'explorer/index.html' %}
+
+{% block data %}
+  <a href="{% url 'explorer:landing_page' %}">Home</a>
+
+  <ul>
+    {% for account in all_accounts %}
+      <li><a href="{% url 'explorer:single_account' account.Id %}">[detail]</a> {{ account }}</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
