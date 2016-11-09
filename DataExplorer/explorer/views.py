@@ -65,7 +65,10 @@ def single_entity(request, entity, entity_id):
         # Get correct python-quickbooks object
         qb_object = select_quickbooks_object(entity)
         # Hit QBO API to get correct instance of entity
-        result = qb_object.get(id=entity_id, qb=client)
+        try:
+            result = qb_object.get(id=entity_id, qb=client)
+        except QuickbooksException:
+            return HttpResponse('Sorry, no %s with the ID %s found.' % (entity, entity_id))
 
         # Prepare context and render to template
         context = dict(
@@ -96,7 +99,11 @@ def query(request):
             # Open connection
             client = open_qbo_connection(request)
 
-            query_response = qb_object.query(query, qb=client)
+            try:
+                query_response = qb_object.query(query, qb=client)
+            except QuickbooksException:
+                return HttpResponse('Sorry, the query "%s" did not return any results.' % query)
+
             result = map(lambda response_item: response_item.to_json(), query_response)
 
             context = dict(
