@@ -1,8 +1,7 @@
 .idea
 db.sqlite3
+__pycache__
+*.pyc
 
 # Local settings -- for now only has the QBO keys
 /DataExplorer/DataExplorer/settings/local.py
-
-# Cache
-__pycache__
