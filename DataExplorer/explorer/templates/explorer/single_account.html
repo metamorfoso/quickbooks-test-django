@@ -4,18 +4,7 @@
   <a href="{% url 'explorer:landing_page' %}">Home</a>
 
   <h3>{{ account }}</h3>
-  <p>{{ description }}</p>
-
-  <ul>
-    <li>Sub Account: {{ account.SubAccount }}</li>
-    <li>Active: {% if account.Active %} Yes {% else %} No {% endif %}</li>
-    <li>Classification: {{ account.Classification }}</li>
-    <li>Account Type: {{ account.AccountType }}</li>
-    <li>Account Subtype: {{ account.AccountSubType }}</li>
-    <li>Current Balance: {{ account.CurrentBalance }}</li>
-    <li>Current Balance With Subaccounts: {{ account.CurrentBalanceWithSubAccounts }}</li>
-    <li>Currency Ref: {{ account.CurrencyRef }}</li>
-    <li>Metadata: {{ account.MetaData }}</li>
-  </ul>
-
+  <pre>
+    {{ account_json }}
+  </pre>
 {% endblock %}

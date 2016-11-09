@@ -1,20 +1,47 @@
 <!doctype html>
 <body>
-  <div id="site">
+<div id="site">
 
-    {% if connected %}
-      <a href="{% url 'explorer:qb_disconnect' %}">Disconnect from Quickbooks</a>
-      <br>
-      {% if company_id %}
-        <h3>Company {{company_id}}</h3>
-        <a href="{% url 'explorer:all_accounts' %}">Browse Accounts</a>
-      {% endif %}
-    {% else %}
-      <a href="{% url 'explorer:qb_connect' %}">Connect to Quickbooks</a>
+  {% if connected %}
+    <a href="{% url 'explorer:qb_disconnect' %}">Disconnect from Quickbooks</a>
+    <br>
+    {% if landing_page %}
+      <h3>Company {{ company_id }}</h3>
+      <a href="{% url 'explorer:all_accounts' %}">Browse Accounts</a>
+
+      <h4>Query</h4>
+      <form action="{% url 'explorer:query' %}" method="post">
+        {% csrf_token %}
+        <select name="entity">
+          {% for entity in entities %}
+            <option value="{{ entity }}">{{ entity }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" name="query" value="" placeholder="Select * From Account"/>
+        <input type="submit"/>
+      </form>
+
+      <h4>Read</h4>
+      <form action="{% url 'explorer:read' %}" method="post">
+        {% csrf_token %}
+        <select name="entity">
+          {% for entity in entities %}
+            <option value="{{ entity }}">{{ entity }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" name="entity_id" value="" placeholder="ID"/>
+        <input type="submit"/>
+      </form>
+
     {% endif %}
 
-    {% block data %}
-    {% endblock %}
+  {% else %}
+    <a href="{% url 'explorer:qb_connect' %}">Connect to Quickbooks</a>
+  {% endif %}
 
-  </div>
+
+  {% block data %}
+  {% endblock %}
+
+</div>
 </body>
