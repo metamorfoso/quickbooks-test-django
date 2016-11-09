@@ -88,11 +88,11 @@ def query(request):
     :return HttpResponse:
     """
     # Handle custom query form submission
-    if request.method == 'POST':
+    if request.method == 'GET':
         # Check that a query has been submitted TODO: query validation
-        if request.POST.get('query'):
-            selected_entity = request.POST.get('entity')
-            query = request.POST.get('query')
+        if request.GET.get('query'):
+            selected_entity = request.GET.get('entity')
+            query = request.GET.get('query')
 
             # Get correct python-quickbooks object
             qb_object = select_quickbooks_object(selected_entity)
@@ -122,11 +122,11 @@ def read(request):
     :return call of single_entity view:
     """
     # Handle form submission
-    if request.method == 'POST':
+    if request.method == 'GET':
         # Check that an id has been submitted
-        if request.POST.get('entity_id'):
-            selected_entity = request.POST.get('entity')
-            selected_entity_id = request.POST.get('entity_id')
+        if request.GET.get('entity_id'):
+            selected_entity = request.GET.get('entity')
+            selected_entity_id = request.GET.get('entity_id')
 
             # Call single entity view
             return single_entity(request, selected_entity, selected_entity_id)

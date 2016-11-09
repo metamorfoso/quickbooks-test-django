@@ -8,7 +8,7 @@
     {% if landing_page %}
       <h3>Company {{ company_id }}</h3>
       <h4>Query</h4>
-      <form action="{% url 'explorer:query' %}" method="post">
+      <form action="{% url 'explorer:query' %}" method="get">
         {% csrf_token %}
         <select name="entity">
           {% for entity in entities %}
@@ -20,7 +20,7 @@
       </form>
 
       <h4>Read</h4>
-      <form action="{% url 'explorer:read' %}" method="post">
+      <form action="{% url 'explorer:read' %}" method="get">
         {% csrf_token %}
         <select name="entity">
           {% for entity in entities %}
