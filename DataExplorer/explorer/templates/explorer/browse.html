@@ -1,0 +1,12 @@
+{% extends 'explorer/index.html' %}
+
+{% block data %}
+  <a href="{% url 'explorer:landing_page' %}">Home</a>
+
+  <ul>
+    {% for entity_instance in entity_queryset %}
+      <li><a href="{% url 'explorer:single_entity' entity=entity entity_id=entity_instance.Id %}">[detail]</a> {{ entity_instance }}</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

@@ -4,7 +4,16 @@
   <a href="{% url 'explorer:landing_page' %}">Home</a>
 
   <h3>{{ result }}</h3>
-  <pre>
-    {{ result_json }}
-  </pre>
+
+  <form action="{% url 'explorer:update' %}" method="post" onsubmit="return confirm('Confirm Update');">
+    {% csrf_token %}
+    <input type="hidden" name="entity" value="{{ entity }}"/>
+    <input type="hidden" name="entity_id" value="{{ entity_id }}"/>
+    <textarea name="json_data" rows="30" cols="80">
+
+      {{ result_json }}
+
+    </textarea>
+    <input type="submit" value="Update"/>
+  </form>
 {% endblock %}

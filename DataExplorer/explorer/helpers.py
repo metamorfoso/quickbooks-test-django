@@ -98,6 +98,5 @@ def select_quickbooks_object(entity):
     :param entity:
     :return quickbooks object:
     """
-
     # Choose correct object from quickbooks library, based on provided entity
     return ENTITY_OBJECT_DICT[entity]

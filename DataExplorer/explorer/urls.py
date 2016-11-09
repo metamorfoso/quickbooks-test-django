@@ -11,5 +11,6 @@ urlpatterns = [
     # url(r'^single_account/(?P<account_id>[\w-]+)$', views.single_account, name='single_account'),
     url(r'^single_entity/(?P<entity>[\w-]+)/(?P<entity_id>[\w-]+)/$', views.single_entity, name='single_entity'),
     url(r'^query/$', views.query, name='query'),
-    url(r'^read/$', views.read, name='read')
+    url(r'^read/$', views.read, name='read'),
+    url(r'^update/$', views.update, name='update')
 ]

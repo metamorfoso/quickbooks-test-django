@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from quickbooks.client import QuickBooks
+from quickbooks.exceptions import QuickbooksException
 from DataExplorer.settings import QUICKBOOKS_CLIENT_KEY, QUICKBOOKS_CLIENT_SECRET, CALLBACK_URL, QUERIABLE_ENTITIES
 from .helpers import open_qbo_connection, select_quickbooks_object
+import json
 
 
 def index(request):
@@ -133,7 +135,7 @@ def single_entity(request, entity, entity_id):
     if 'access_token' in request.session:
         # Open connection
         client = open_qbo_connection(request)
-        # Get correct quickbooks-python object
+        # Get correct python-quickbooks object
         qb_object = select_quickbooks_object(entity)
         # Hit QBO API to get correct instance of entity
         result = qb_object.get(id=entity_id, qb=client)
@@ -141,6 +143,8 @@ def single_entity(request, entity, entity_id):
         # Prepare context and render to template
         context = dict(
             connected=True,
+            entity=entity,
+            entity_id=entity_id,
             result=result,
             result_json=result.to_json()
         )
@@ -160,7 +164,7 @@ def query(request):
             selected_entity = request.POST.get('entity')
             query = request.POST.get('query')
 
-            # Get correct quickbooks-python object
+            # Get correct python-quickbooks object
             qb_object = select_quickbooks_object(selected_entity)
             # Open connection
             client = open_qbo_connection(request)
@@ -173,7 +177,7 @@ def query(request):
                 result=result,
                 query=query
             )
-            return render(request, 'explorer/custom_query_results.html', context)
+            return render(request, 'explorer/query_results.html', context)
 
 
 def read(request):
@@ -192,3 +196,33 @@ def read(request):
 
             # Call single entity view
             return single_entity(request, selected_entity, selected_entity_id)
+
+
+def update(request):
+    # Handle form submission
+    if request.method == 'POST':
+        # Check that entity and id have been submitted
+        if request.POST.get('entity') and request.POST.get('entity_id') and request.POST.get('json_data'):
+            entity = request.POST.get('entity')
+            entity_id = request.POST.get('entity_id')
+            json_data = json.loads(request.POST.get('json_data'))
+
+            # Open connection
+            client = open_qbo_connection(request)
+            # Get correct python-quickbooks object
+            qb_object = select_quickbooks_object(entity)
+
+            # Get the instance and update it based on the json data received from the form
+            instance = qb_object.get(entity_id, qb=client)
+
+            original_json = instance.to_json()
+            print(original_json[0])
+            print(json_data[0])
+
+            # instance.from_json(json_data)
+            try:
+                instance.save(qb=client)
+            except QuickbooksException:
+                return HttpResponse('Error updating the instance. Please make sure the data is correctly formatted.')
+
+            return redirect(reverse('explorer:single_entity', args=(entity, entity_id,)))
