@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect
 from quickbooks.client import QuickBooks
 from quickbooks.objects.account import Account
 from quickbooks.objects.customer import Customer
-from DataExplorer.settings import QUICKBOOKS_CLIENT_KEY, QUICKBOOKS_CLIENT_SECRET, CALLBACK_URL
+from DataExplorer.settings import QUICKBOOKS_CLIENT_KEY, QUICKBOOKS_CLIENT_SECRET, CALLBACK_URL, QUERIABLE_ENTITIES
 from .helpers import open_qbo_connection, select_quickbooks_object
-
-QUERIABLE_ENTITIES = ['Account', 'Customer']
 
 
 def index(request):
@@ -105,9 +103,9 @@ def qb_disconnect(request):
 
 
 # Series of views for querying QBO on specific data and displaying them
-def all_accounts(request):
+def browse(request, entity):
     """
-    View all accounts associated with the company.
+    View all entities associated with the company.
     :param request:
     :return HttpResponse:
     """
@@ -120,26 +118,7 @@ def all_accounts(request):
             all_accounts=Account.all(qb=client),
             customers=Customer.all(qb=client)
         )
-        return render(request, 'explorer/all_accounts.html', context)
-
-
-# def single_account(request, account_id):
-#     """
-#     View a specific account.
-#     :param request:
-#     :param account_id:
-#     :return HttpResponse:
-#     """
-#     if 'access_token' in request.session:
-#         # Open connection
-#         client = open_qbo_connection(request)
-#         account = Account.get(id=account_id, qb=client)
-#         context = dict(
-#             connected=True,
-#             account=account,
-#             account_json=account.to_json()
-#         )
-#         return render(request, 'explorer/single_account.html', context)
+        return render(request, 'explorer/browse.html', context)
 
 
 def single_entity(request, entity, entity_id):

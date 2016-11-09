@@ -7,8 +7,6 @@
     <br>
     {% if landing_page %}
       <h3>Company {{ company_id }}</h3>
-      <a href="{% url 'explorer:all_accounts' %}">Browse Accounts</a>
-
       <h4>Query</h4>
       <form action="{% url 'explorer:query' %}" method="post">
         {% csrf_token %}
@@ -17,7 +15,7 @@
             <option value="{{ entity }}">{{ entity }}</option>
           {% endfor %}
         </select>
-        <input type="text" name="query" value="" placeholder="Select * From Account"/>
+        <input type="text" name="query" value="" placeholder="Select * From <entity>"/>
         <input type="submit"/>
       </form>
 
@@ -32,6 +30,11 @@
         <input type="text" name="entity_id" value="" placeholder="ID"/>
         <input type="submit"/>
       </form>
+
+      Browse:
+      {% for entity in entities %}
+        <a href="{% url 'explorer:browse' entity %}"><p>{{ entity }}</p></a>
+      {% endfor %}
 
     {% endif %}
 

@@ -1,7 +1,72 @@
 from quickbooks.client import QuickBooks
 from DataExplorer.settings import QUICKBOOKS_CLIENT_KEY, QUICKBOOKS_CLIENT_SECRET
+
 from quickbooks.objects.account import Account
+from quickbooks.objects.attachable import Attachable
+from quickbooks.objects.bill import Bill
+from quickbooks.objects.billpayment import BillPayment
+from quickbooks.objects.budget import Budget
+from quickbooks.objects.company_info import CompanyInfo
+from quickbooks.objects.creditmemo import CreditMemo
 from quickbooks.objects.customer import Customer
+from quickbooks.objects.department import Department
+from quickbooks.objects.deposit import Deposit
+from quickbooks.objects.employee import Employee
+from quickbooks.objects.estimate import Estimate
+from quickbooks.objects.invoice import Invoice
+from quickbooks.objects.item import Item
+from quickbooks.objects.journalentry import JournalEntry
+from quickbooks.objects.payment import Payment
+from quickbooks.objects.paymentmethod import PaymentMethod
+from quickbooks.objects.purchase import Purchase
+from quickbooks.objects.purchaseorder import PurchaseOrder
+from quickbooks.objects.refundreceipt import RefundReceipt
+from quickbooks.objects.salesreceipt import SalesReceipt
+from quickbooks.objects.taxagency import TaxAgency
+from quickbooks.objects.taxcode import TaxCode
+from quickbooks.objects.taxrate import TaxRate
+from quickbooks.objects.taxservice import TaxService
+from quickbooks.objects.term import Term
+from quickbooks.objects.timeactivity import TimeActivity
+from quickbooks.objects.transfer import Transfer
+from quickbooks.objects.vendor import Vendor
+from quickbooks.objects.vendorcredit import VendorCredit
+
+
+# Build dictionary of quickbook objects and matching entities
+# TODO: rework this to be built programatically, based on the QUERIABLE_ENTITIES variable from settings
+ENTITY_OBJECT_DICT = {
+    'Account': Account,
+    'Attachable': Attachable,
+    'Bill': Bill,
+    'BillPayment': BillPayment,
+    'Budget': Budget,
+    'CompanyInfo': CompanyInfo,
+    'CreditMemo': CreditMemo,
+    'Customer': Customer,
+    'Department': Department,
+    'Deposit': Deposit,
+    'Employee': Employee,
+    'Estimate': Estimate,
+    'Invoice': Invoice,
+    'Item': Item,
+    'JournalEntry': JournalEntry,
+    'Payment': Payment,
+    'PaymentMethod': PaymentMethod,
+    'Purchase': Purchase,
+    'PurchaseOrder': PurchaseOrder,
+    'RefundReceipt': RefundReceipt,
+    'SalesReceipt': SalesReceipt,
+    'TaxAgency': TaxAgency,
+    'TaxCode': TaxCode,
+    'TaxRate': TaxRate,
+    'TaxService': TaxService,
+    'Term': Term,
+    'TimeActivity': TimeActivity,
+    'Transfer': Transfer,
+    'Vendor': Vendor,
+    'VendorCredit': VendorCredit
+}
 
 
 def open_qbo_connection(request):
@@ -34,12 +99,5 @@ def select_quickbooks_object(entity):
     :return quickbooks object:
     """
 
-    # TODO: Extend this to include all endpoints, not just Account and Customer
-    # Build dictionary of quickbook objects and matching entities
-    qb_object_and_entities = {
-        'Account': Account,
-        'Customer': Customer
-    }
-
     # Choose correct object from quickbooks library, based on provided entity
-    return qb_object_and_entities[entity]
+    return ENTITY_OBJECT_DICT[entity]
