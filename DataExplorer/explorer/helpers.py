@@ -2,7 +2,6 @@ from quickbooks.client import QuickBooks
 from DataExplorer.settings import QUICKBOOKS_CLIENT_KEY, QUICKBOOKS_CLIENT_SECRET
 
 from quickbooks.objects.account import Account
-from quickbooks.objects.attachable import Attachable
 from quickbooks.objects.bill import Bill
 from quickbooks.objects.billpayment import BillPayment
 from quickbooks.objects.budget import Budget
@@ -37,7 +36,6 @@ from quickbooks.objects.vendorcredit import VendorCredit
 # TODO: rework this to be built programatically, based on the QUERIABLE_ENTITIES variable from settings
 ENTITY_OBJECT_DICT = {
     'Account': Account,
-    'Attachable': Attachable,
     'Bill': Bill,
     'BillPayment': BillPayment,
     'Budget': Budget,

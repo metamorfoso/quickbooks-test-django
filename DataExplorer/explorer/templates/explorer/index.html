@@ -3,7 +3,7 @@
 <div id="site">
 
   {% if connected %}
-    <a href="{% url 'explorer:qb_disconnect' %}">Disconnect from Quickbooks</a>
+    <a href="{% url 'connector:qb_disconnect' %}">Disconnect from Quickbooks</a>
     <br>
     {% if landing_page %}
       <h3>Company {{ company_id }}</h3>
@@ -56,7 +56,7 @@
     {% endif %}
 
   {% else %}
-    <a href="{% url 'explorer:qb_connect' %}">Connect to Quickbooks</a>
+    <a href="{% url 'connector:qb_connect' %}">Connect to Quickbooks</a>
   {% endif %}
 
 

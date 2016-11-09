@@ -3,7 +3,7 @@
 # List of QBO entities that the app deals with
 QUERIABLE_ENTITIES = [
     'Account',
-    'Attachable',
+    # 'Attachable',
     # 'Batch',
     'Bill',
     'BillPayment',
