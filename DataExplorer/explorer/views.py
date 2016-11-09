@@ -205,24 +205,37 @@ def update(request):
         if request.POST.get('entity') and request.POST.get('entity_id') and request.POST.get('json_data'):
             entity = request.POST.get('entity')
             entity_id = request.POST.get('entity_id')
-            json_data = json.loads(request.POST.get('json_data'))
+            new_json_data = json.loads(request.POST.get('json_data'))
 
             # Open connection
             client = open_qbo_connection(request)
             # Get correct python-quickbooks object
             qb_object = select_quickbooks_object(entity)
 
-            # Get the instance and update it based on the json data received from the form
             instance = qb_object.get(entity_id, qb=client)
+            updated_instance = instance.from_json(new_json_data)
 
-            original_json = instance.to_json()
-            print(original_json[0])
-            print(json_data[0])
-
-            # instance.from_json(json_data)
             try:
-                instance.save(qb=client)
+                updated_instance.save(qb=client)
             except QuickbooksException:
                 return HttpResponse('Error updating the instance. Please make sure the data is correctly formatted.')
 
             return redirect(reverse('explorer:single_entity', args=(entity, entity_id,)))
+
+
+def create(request):
+    # Handle form submission
+    if request.method == 'POST':
+        if request.POST.get('create_json_data'):
+            json_data = json.loads(request.POST.get('create_json_data'))
+            selected_entity = request.POST.get('entity')
+            # Open connection
+            client = open_qbo_connection(request)
+            # Get correct python-quickbooks object
+            qb_object = select_quickbooks_object(selected_entity)
+
+            fresh_instance = qb_object()
+            new_instance = fresh_instance.from_json(json_data)
+            new_instance.save(qb=client)
+
+            return redirect('/')

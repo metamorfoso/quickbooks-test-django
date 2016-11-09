@@ -31,10 +31,25 @@
         <input type="submit"/>
       </form>
 
+      <h4>Create</h4>
+      <form action="{% url 'explorer:create' %}" method="post">
+        {% csrf_token %}
+        <select name="entity">
+          {% for entity in entities %}
+            <option value="{{ entity }}">{{ entity }}</option>
+          {% endfor %}
+        </select>
+        <textarea name="create_json_data" rows="10" cols="40" placeholder="JSON goes here"></textarea>
+        {# TODO: more detailed placeholder, depending on which select option is currenty chosen (as different entities require different keys/values). #}
+        <input type="submit"/>
+      </form>
+
       <h4>Browse</h4>
       <ul>
         {% for entity in entities %}
-          <a href="{% url 'explorer:browse' entity %}"><li>{{ entity }}</li></a>
+          <a href="{% url 'explorer:browse' entity %}">
+            <li>{{ entity }}</li>
+          </a>
         {% endfor %}
       </ul>
 
