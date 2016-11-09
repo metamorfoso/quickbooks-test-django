@@ -31,10 +31,12 @@
         <input type="submit"/>
       </form>
 
-      Browse:
-      {% for entity in entities %}
-        <a href="{% url 'explorer:browse' entity %}"><p>{{ entity }}</p></a>
-      {% endfor %}
+      <h4>Browse</h4>
+      <ul>
+        {% for entity in entities %}
+          <a href="{% url 'explorer:browse' entity %}"><li>{{ entity }}</li></a>
+        {% endfor %}
+      </ul>
 
     {% endif %}
 

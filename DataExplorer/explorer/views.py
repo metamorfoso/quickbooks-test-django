@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from quickbooks.client import QuickBooks
-from quickbooks.objects.account import Account
-from quickbooks.objects.customer import Customer
 from DataExplorer.settings import QUICKBOOKS_CLIENT_KEY, QUICKBOOKS_CLIENT_SECRET, CALLBACK_URL, QUERIABLE_ENTITIES
 from .helpers import open_qbo_connection, select_quickbooks_object
 
@@ -105,23 +103,33 @@ def qb_disconnect(request):
 # Series of views for querying QBO on specific data and displaying them
 def browse(request, entity):
     """
-    View all entities associated with the company.
+    Displays all instances of an entity (such as Account, Customer, Payment, etc) associated with the company.
     :param request:
+    :param entity:
     :return HttpResponse:
     """
     if 'access_token' in request.session:
         # Open connection
         client = open_qbo_connection(request)
+        # Get the right object from python-quickbooks
+        qb_object = select_quickbooks_object(entity)
         # Prepare context with all accounts
         context = dict(
             connected=True,
-            all_accounts=Account.all(qb=client),
-            customers=Customer.all(qb=client)
+            entity=entity,
+            entity_queryset=qb_object.all(qb=client)
         )
         return render(request, 'explorer/browse.html', context)
 
 
 def single_entity(request, entity, entity_id):
+    """
+    Displays a single instance of a given entity (e.g. a specific Account, or specific Customer).
+    :param request:
+    :param entity:
+    :param entity_id:
+    :return HttpResponse:
+    """
     if 'access_token' in request.session:
         # Open connection
         client = open_qbo_connection(request)
@@ -140,6 +148,11 @@ def single_entity(request, entity, entity_id):
 
 
 def query(request):
+    """
+    Handles custom query of QBO API (such as "Select * From Account") and displays results on a separate page.
+    :param request:
+    :return HttpResponse:
+    """
     # Handle custom query form submission
     if request.method == 'POST':
         # Check that a query has been submitted TODO: query validation
@@ -164,6 +177,12 @@ def query(request):
 
 
 def read(request):
+    """
+    Handles query for a specific entity instance by its ID (e.g. the Account with the ID 33). Gets the correct
+    entity and ID and calls the single_entity view with these as arguments.
+    :param request:
+    :return call of single_entity view:
+    """
     # Handle form submission
     if request.method == 'POST':
         # Check that an id has been submitted
