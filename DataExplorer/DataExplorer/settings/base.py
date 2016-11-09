@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Apps for this project
     'explorer',
+    'connector',
 ]
 
 MIDDLEWARE = [
