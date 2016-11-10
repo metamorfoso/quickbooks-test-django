@@ -11,6 +11,11 @@ Quick Setup Guide
 - Install Python 3.5
 - Install pip
 - Clone repo
+- In the project settings directory, create the file local.py: `quickbooks-test-django/DataExplorer/settings/local.py`
+- Add the following to local.py:
+`QUICKBOOKS_CLIENT_KEY = <value_as_string>
+QUICKBOOKS_CLIENT_SECRET = <value_as_string>
+CALLBACK_URL = 'http://127.0.0.1:8000/qb_callback'`
 - Navigate to project root (quickbooks-test-django/DataExplorer)
 - Install dependencies: `pip install -r requirements.txt`
 - Apply migrations: `python manage.py migrate`
