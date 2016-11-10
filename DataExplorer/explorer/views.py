@@ -131,6 +131,8 @@ def read(request):
             # Call single entity view
             return single_entity(request, selected_entity, selected_entity_id)
 
+        return HttpResponse('Error: please enter an ID.')
+
 
 # TODO: update and create are not yet complete -- they currently raise API errors. Need debugging and fixing.
 def update(request):
